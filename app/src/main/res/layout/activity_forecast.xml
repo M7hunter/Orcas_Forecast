@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="cityName"
+            type="String" />
+
+        <variable
+            name="notAccurate"
+            type="Boolean" />
+
+        <variable
+            name="noCity"
+            type="Boolean" />
+
+        <variable
+            name="failed"
+            type="Boolean" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        tools:context=".ui.forecast.ForecastActivity">
+
+        <!-- search bar -->
+        <com.google.android.material.appbar.AppBarLayout
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:gravity="center_vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:background="@android:color/transparent"
+                    android:hint="@string/city_name"
+                    android:inputType="textPersonName"
+                    android:paddingHorizontal="@dimen/dp_20"
+                    android:text="@{cityName}"
+                    android:textColor="@color/white" />
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:adjustViewBounds="true"
+                    android:foreground="?attr/actionBarItemBackground"
+                    android:padding="@dimen/dp_12"
+                    android:src="@drawable/ic_search"
+                    app:tint="@color/white" />
+
+            </LinearLayout>
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <!-- not accurate warning -->
+        <TextView
+            android:id="@+id/tv_not_accurate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/light_baby_blue"
+            android:text="@string/not_accurate_data"
+            android:textAlignment="center"
+            android:textColor="@color/red"
+            android:visibility="@{notAccurate ? View.VISIBLE : View.GONE}"
+            tools:visibility="gone" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <!-- data -->
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_forecast"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipToPadding="true"
+                android:paddingBottom="@dimen/dp_16"
+                android:visibility="@{noCity||failed ? View.GONE: View.VISIBLE}"
+                tools:itemCount="4"
+                tools:listitem="@layout/item_forecast"
+                tools:visibility="visible" />
+
+            <!-- enter city hint -->
+            <TextView
+                android:id="@+id/tv_enter_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/dp_20"
+                android:text="@string/enter_city_name"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold|italic"
+                android:visibility="@{noCity ? View.VISIBLE: View.GONE}"
+                app:drawableTopCompat="@drawable/ic_search_72"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:visibility="gone" />
+
+            <!-- error -->
+            <TextView
+                android:id="@+id/tv_error"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawablePadding="@dimen/dp_20"
+                android:text="@string/couldn_t_fetch_data"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold|italic"
+                android:visibility="@{failed ? View.VISIBLE: View.GONE}"
+                app:drawableTopCompat="@drawable/ic_cloud_off"
+                app:layout_constraintBottom_toTopOf="@id/btn_try_again"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:visibility="gone" />
+
+            <!-- try again -->
+            <Button
+                android:id="@+id/btn_try_again"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="@dimen/dp_12"
+                android:text="@string/try_again"
+                android:visibility="@{failed ? View.VISIBLE: View.GONE}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/tv_error"
+                tools:visibility="gone" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
+</layout>
